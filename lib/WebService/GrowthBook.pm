@@ -3,6 +3,7 @@ package WebService::GrowthBook;
 
 use strict;
 use warnings;
+use Object::Pad;
 
 our $VERSION = '0.001';
 
@@ -18,6 +19,14 @@ WebService::GrowthBook - Module abstract
 =head1 DESCRIPTION
 
 =cut
+
+class WebService::GrowthBook {
+    field $url: param;
+
+    method load_features {
+        return 1;
+    }
+}
 
 =head1 METHODS
 
