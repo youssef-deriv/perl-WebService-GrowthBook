@@ -4,8 +4,9 @@ use warnings;
 use Object::Pad;
 
 class WebService::GrowthBook::Feature{
-    field $default_value :param;
-    field $value_type :param;
+    field $id :param :reader;
+    field $default_value :param :reader;
+    field $value_type :param :reader;
 }
 
 1;

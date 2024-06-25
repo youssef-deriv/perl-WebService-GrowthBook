@@ -3,10 +3,13 @@ package WebService::GrowthBook;
 
 use strict;
 use warnings;
+use feature qw(state);
 use Object::Pad;
-use JSON::MaybeXS;
+use JSON::MaybeUTF8 qw(decode_json_text);
+use Scalar::Util qw(blessed);
 use WebService::GrowthBook::FeatureRepository;
 use WebService::GrowthBook::Feature;
+use WebService::GrowthBook::FeatureResult;
 
 our $VERSION = '0.001';
 
@@ -24,57 +27,68 @@ WebService::GrowthBook - Module abstract
 =cut
 
 # singletons
-my $feature_repository = WebService::GrowthBook::FeatureRepository->new;
+my  $feature_repository = WebService::GrowthBook::FeatureRepository->new;
 class WebService::GrowthBook {
-    field $url: param //= '';
+    field $url: param //= 'https://api.growthbook.io/api/v1';
     field $client_key: param //= '';
     field $features: param //= {};
+
     method load_features {
         if(!$client_key) {
             die "Must specify 'client_key' to refresh features";
         }
         my $loaded_features = $feature_repository->load_features($url, $client_key);
         if($loaded_features){
-            set_features($loaded_features);
+            $self->set_features($loaded_features);
         }
         return 1;
     }
     method set_features($features_set) {
         $features = {};
-        for (my ($key, $feature) = each $features_set->%*) {
-            if($feature->isa('WebService::GrowthBook::Feature')){
-                $features->{$key} = $feature;
+        use Data::Dumper;
+        print Dumper($features_set);
+        for my $feature ($features_set->@*) {
+            if(blessed($feature) && $feature->isa('WebService::GrowthBook::Feature')){
+                $features->{$feature->id} = $feature;
             }
             else {
-                $features->{$key} = WebService::GrowthBook::Feature->new(default_value => $feature->{default_value});
+                $features->{$feature->{id}} = WebService::GrowthBook::Feature->new(id => $feature->{id}, default_value => $feature->{defaultValue}, value_type => $feature->{valueType});
             }
+        }
     }
     
     method is_on($feature_name) {
         # TODO how to do if no such feature name?
-        return eval_feature($feature_name)->is_on;
+        return $self->eval_feature($feature_name)->on;
     }
     
     method is_off($feature_name) {
         # TODO how to do if no such feature name?
-        return eval_feature($feature_name)->is_off;
+        return $self->eval_feature($feature_name)->off;
     }
     
-    method eval_future($feature_name){
+    method eval_feature($feature_name){
         if(!exists($features->{$feature_name})){
             die "No such feature: $feature_name";
         }
         my $feature = $features->{$feature_name};
         my $default_value = $feature->default_value;
         if($feature->value_type eq 'json'){
-            $default_value = decode_json($default_value);
+            $default_value = decode_json_text($default_value);
         }
-        return WebService::GrowthBook::FeatureResult(
+        elsif($feature->value_type eq 'number'){
+            $default_value = 0 + $default_value;
+        }
+        elsif($feature->value_type eq 'boolean'){
+            $default_value = $default_value eq 'true' ? 1 : 0;
+        }
+    
+        return WebService::GrowthBook::FeatureResult->new(
             value => $default_value);
     }
     
     method get_feature_value($feature_name){
-        return eval_feature($feature_name)->value;
+        return $self->eval_feature($feature_name)->value;
     }
 }
 
