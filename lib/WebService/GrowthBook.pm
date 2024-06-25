@@ -47,8 +47,23 @@ class WebService::GrowthBook {
             else {
                 $features->{$key} = WebService::GrowthBook::Feature->new(default_value => $feature->{default_value});
             }
-        
     }
+    
+    method is_on($feature_name) {
+        # TODO how to do if no such feature name?
+        return eval_feature($feature_name)->is_on;
+    }
+    
+    method is_off($feature_name) {
+        # TODO how to do if no such feature name?
+        return eval_feature($feature_name)->is_off;
+    }
+    
+    method eval_future($feature_name){
+        return WebService::GrowthBook::FeatureResult(
+            value => $features->{$feature_name}->default_value);
+    }
+    # TODO get_feature_value
 }
 
 =head1 METHODS
