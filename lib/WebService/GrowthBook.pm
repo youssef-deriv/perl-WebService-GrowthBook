@@ -72,7 +72,10 @@ class WebService::GrowthBook {
         return WebService::GrowthBook::FeatureResult(
             value => $default_value);
     }
-    # TODO get_feature_value
+    
+    method get_feature_value($feature_name){
+        return eval_feature($feature_name)->value;
+    }
 }
 
 =head1 METHODS
