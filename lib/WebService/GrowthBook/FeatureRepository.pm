@@ -8,7 +8,7 @@ use Syntax::Keyword::Try;
 use JSON::MaybeUTF8 qw(decode_json_utf8);
 
 class WebService::GrowthBook::FeatureRepository {
-    field $http: param //= HTTP::Tiny->new();
+    field $http :param //= HTTP::Tiny->new();
     method load_features($api_host, $client_key) {
         # TODO add cache here
         my $features = $self->_fetch_features($api_host, $client_key);
@@ -32,7 +32,6 @@ class WebService::GrowthBook::FeatureRepository {
         try {
             my $r = $self->_get($self->_get_features_url($api_host), $client_key);
             use Data::Dumper;
-            print Dumper($r);
             if($r->{status} >= 400){
                 $log->warnf("Failed to fetch features, received status code %d", $r->{status});
                 return;
@@ -52,7 +51,7 @@ class WebService::GrowthBook::FeatureRepository {
             'Content-Type'  => 'application/json',
         };
 
-            print Dumper($headers);
+            #print Dumper($headers);
         return  $http->get($url, {headers => $headers});
     }
 

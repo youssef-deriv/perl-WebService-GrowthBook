@@ -3,7 +3,7 @@ use warnings;
 use Object::Pad;
 
 class WebService::GrowthBook::FeatureResult{
-    field $value :param;
+    field $value :param :reader;
     method on{
         return $value ? 1 : 0;
     }

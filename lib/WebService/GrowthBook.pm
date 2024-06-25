@@ -46,7 +46,7 @@ class WebService::GrowthBook {
     method set_features($features_set) {
         $features = {};
         use Data::Dumper;
-        print Dumper($features_set);
+        #print Dumper($features_set);
         for my $feature ($features_set->@*) {
             if(blessed($feature) && $feature->isa('WebService::GrowthBook::Feature')){
                 $features->{$feature->id} = $feature;
