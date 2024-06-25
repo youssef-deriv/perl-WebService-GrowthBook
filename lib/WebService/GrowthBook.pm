@@ -30,11 +30,14 @@ class WebService::GrowthBook {
         if(!$client_key) {
             die "Must specify 'client_key' to refresh features";
         }
-        my $features = $feature_repository->load_features($url, $client_key);
-        if($features){
-            set_features($features);
+        my $loaded_features = $feature_repository->load_features($url, $client_key);
+        if($loaded_features){
+            set_features($loaded_features);
         }
         return 1;
+    }
+    method set_features {
+        my $features = shift;
     }
 }
 
