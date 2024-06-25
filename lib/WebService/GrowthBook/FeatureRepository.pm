@@ -31,7 +31,6 @@ class WebService::GrowthBook::FeatureRepository {
     method _fetch_and_decode($api_host, $client_key){
         try {
             my $r = $self->_get($self->_get_features_url($api_host), $client_key);
-            use Data::Dumper;
             if($r->{status} >= 400){
                 $log->warnf("Failed to fetch features, received status code %d", $r->{status});
                 return;
@@ -51,7 +50,6 @@ class WebService::GrowthBook::FeatureRepository {
             'Content-Type'  => 'application/json',
         };
 
-            #print Dumper($headers);
         return  $http->get($url, {headers => $headers});
     }
 
