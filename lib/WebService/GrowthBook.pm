@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Object::Pad;
 use WebService::GrowthBook::FeatureRepository;
+use WebService::GrowthBook::Features;
 
 our $VERSION = '0.001';
 
@@ -26,6 +27,7 @@ my $feature_repository = WebService::GrowthBook::FeatureRepository->new;
 class WebService::GrowthBook {
     field $url: param //= '';
     field $client_key: param //= '';
+    field $features: param //= {};
     method load_features {
         if(!$client_key) {
             die "Must specify 'client_key' to refresh features";
@@ -36,8 +38,16 @@ class WebService::GrowthBook {
         }
         return 1;
     }
-    method set_features {
-        my $features = shift;
+    method set_features($features_set) {
+        $features = {};
+        for (my ($key, $feature) = each $features_set->%*) {
+            if($feature->isa('WebService::GrowthBook::Feature')){
+                $features->{$key} = $feature;
+            }
+            else {
+                $features->{$key} = WebService::GrowthBook::Feature->new(default_value => $feature->{default_value});
+            }
+        
     }
 }
 
