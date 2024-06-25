@@ -4,8 +4,9 @@ package WebService::GrowthBook;
 use strict;
 use warnings;
 use Object::Pad;
+use JSON::MaybeXS;
 use WebService::GrowthBook::FeatureRepository;
-use WebService::GrowthBook::Features;
+use WebService::GrowthBook::Feature;
 
 our $VERSION = '0.001';
 
@@ -60,8 +61,16 @@ class WebService::GrowthBook {
     }
     
     method eval_future($feature_name){
+        if(!exists($features->{$feature_name})){
+            die "No such feature: $feature_name";
+        }
+        my $feature = $features->{$feature_name};
+        my $default_value = $feature->default_value;
+        if($feature->value_type eq 'json'){
+            $default_value = decode_json($default_value);
+        }
         return WebService::GrowthBook::FeatureResult(
-            value => $features->{$feature_name}->default_value);
+            value => $default_value);
     }
     # TODO get_feature_value
 }
