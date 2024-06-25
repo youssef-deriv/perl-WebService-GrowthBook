@@ -43,8 +43,13 @@ class WebService::GrowthBook::FeatureRepository {
         }
         return;
     }
-    method _get($url){
-        return  $http->get($url);
+    method _get($url, $client_key){
+
+        my $headers = {
+            'Authorization' => "Bearer $client_key",
+            'Content-Type'  => 'application/json',
+        };
+        return  $http->get($url, {headers => $headers});
     }
 
     method _get_features_url($api_host, $client_key){
