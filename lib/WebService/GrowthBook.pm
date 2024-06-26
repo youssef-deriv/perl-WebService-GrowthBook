@@ -16,19 +16,33 @@ our $VERSION = '0.001';
 
 =head1 NAME
 
-WebService::GrowthBook -
+WebService::GrowthBook - sdk of growthbook
 
 =head1 SYNOPSIS
 
     use WebService::GrowthBook;
-    my $instance = WebService::GrowthBook->new;
+    my $instance = WebService::GrowthBook->new(client_key => 'my key');
+    $instance->load_features;
+    if($instance->is_on('feature_name')){
+        # do something
+    }
+    else {
+        # do something else
+    }
+    my $string_feature = $instance->get_feature_value('string_feature');
+    my $number_feature = $instance->get_feature_value('number_feature');
+    # get decoded json
+    my $json_feature = $instance->get_feature_value('json_feature');
 
 =head1 DESCRIPTION
+
+    This module is a sdk of growthbook, it provides a simple way to use growthbook features.
 
 =cut
 
 # singletons
 my  $feature_repository = WebService::GrowthBook::FeatureRepository->new;
+
 class WebService::GrowthBook {
     field $url: param //= 'https://api.growthbook.io/api/v1';
     field $client_key: param //= '';
@@ -92,6 +106,42 @@ class WebService::GrowthBook {
 }
 
 =head1 METHODS
+
+=head2 load_features
+
+load features from growthbook api
+
+    $instance->load_features;
+
+=head2 is_on
+
+check if a feature is on
+
+    $instance->is_on('feature_name');
+
+=head2 is_off
+
+check if a feature is off
+
+    $instance->is_off('feature_name');
+
+=head2 get_feature_value
+
+get the value of a feature
+
+    $instance->get_feature_value('feature_name');
+
+=head2 set_features
+
+set features
+
+    $instance->set_features($features);
+
+=head2 eval_feature
+
+evaluate a feature to get the value
+
+    $instance->eval_feature('feature_name'); 
 
 =cut
 
