@@ -152,7 +152,9 @@ evaluate a feature to get the value
 
 =over 4
 
-=item *
+=item * L<https://docs.growthbook.io/>
+
+=item * L<python sdk|https://github.com/growthbook/growthbook-python>
 
 =back
 
