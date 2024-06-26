@@ -8,7 +8,7 @@ use Syntax::Keyword::Try;
 use JSON::MaybeUTF8 qw(decode_json_utf8);
 
 class WebService::GrowthBook::FeatureRepository {
-    field $http :param //= HTTP::Tiny->new();
+    field $http :param :writer //= HTTP::Tiny->new();
     method load_features($api_host, $client_key) {
         # TODO add cache here
         my $features = $self->_fetch_features($api_host, $client_key);
@@ -39,7 +39,7 @@ class WebService::GrowthBook::FeatureRepository {
             return $decoded;
         }
         catch ($e){
-            $log->warn("Failed to decode feature JSON from GrowthBook API: $e");
+            $log->warnf("Failed to decode feature JSON from GrowthBook API: %s", $e);
         }
         return;
     }
