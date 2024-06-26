@@ -1,6 +1,7 @@
 package WebService::GrowthBook::FeatureRepository;
 use strict;
 use warnings;
+no indirect;
 use Object::Pad;
 use HTTP::Tiny;
 use Log::Any qw($log);

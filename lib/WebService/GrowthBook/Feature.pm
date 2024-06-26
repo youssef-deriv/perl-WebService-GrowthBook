@@ -1,6 +1,7 @@
 package WebService::GrowthBook::Feature;
 use strict;
 use warnings;
+no indirect;
 use Object::Pad;
 
 class WebService::GrowthBook::Feature{

@@ -3,6 +3,7 @@ package WebService::GrowthBook;
 
 use strict;
 use warnings;
+no indirect;
 use feature qw(state);
 use Object::Pad;
 use JSON::MaybeUTF8 qw(decode_json_text);
@@ -15,7 +16,7 @@ our $VERSION = '0.001';
 
 =head1 NAME
 
-WebService::GrowthBook - Module abstract
+WebService::GrowthBook - 
 
 =head1 SYNOPSIS
 
