@@ -109,7 +109,7 @@ class WebService::GrowthBook {
 
 =head2 load_features
 
-load features from growthbook api
+load features from growthbook API
 
     $instance->load_features;
 
@@ -154,7 +154,7 @@ evaluate a feature to get the value
 
 =item * L<https://docs.growthbook.io/>
 
-=item * L<python sdk|https://github.com/growthbook/growthbook-python>
+=item * L<PYTHON VERSION|https://github.com/growthbook/growthbook-python>
 
 =back
 
