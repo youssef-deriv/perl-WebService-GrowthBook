@@ -8,6 +8,7 @@ use feature qw(state);
 use Object::Pad;
 use JSON::MaybeUTF8 qw(decode_json_text);
 use Scalar::Util qw(blessed);
+use Log::Any qw($log);
 use WebService::GrowthBook::FeatureRepository;
 use WebService::GrowthBook::Feature;
 use WebService::GrowthBook::FeatureResult;
@@ -71,18 +72,21 @@ class WebService::GrowthBook {
     }
     
     method is_on($feature_name) {
-        # TODO how to do if no such feature name?
-        return $self->eval_feature($feature_name)->on;
+        my $result = $self->eval_feature($feature_name);
+        return undef unless defined($result);
+        return $result->on;
     }
     
     method is_off($feature_name) {
-        # TODO how to do if no such feature name?
-        return $self->eval_feature($feature_name)->off;
+        my $result = $self->eval_feature($feature_name);
+        return undef unless defined($result);
+        return $result->off;
     }
     
     method eval_feature($feature_name){
         if(!exists($features->{$feature_name})){
-            die "No such feature: $feature_name";
+            $log->errorf("No such feature: %s", $feature_name);
+            return undef;
         }
         my $feature = $features->{$feature_name};
         my $default_value = $feature->default_value;
@@ -101,7 +105,9 @@ class WebService::GrowthBook {
     }
     
     method get_feature_value($feature_name){
-        return $self->eval_feature($feature_name)->value;
+        my $result = $self->eval_feature($feature_name);
+        return undef unless defined($result);
+        return $result->value;
     }
 }
 
@@ -119,17 +125,23 @@ check if a feature is on
 
     $instance->is_on('feature_name');
 
+Please note it will return undef if the feature does not exist.
+
 =head2 is_off
 
 check if a feature is off
 
     $instance->is_off('feature_name');
 
+Please note it will return undef if the feature does not exist.
+
 =head2 get_feature_value
 
 get the value of a feature
 
     $instance->get_feature_value('feature_name');
+
+Please note it will return undef if the feature does not exist.
 
 =head2 set_features
 
