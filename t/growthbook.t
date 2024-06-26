@@ -20,7 +20,7 @@ $mock->mock(
 
 $get_result = {
     status  => 200,
-    content => path("$Bin/test_data_growthbook.json")->slurp;
+    content => path("$Bin/test_data_growthbook.json")->slurp
 };
 
 $instance = WebService::GrowthBook->new(client_key => 'key');
