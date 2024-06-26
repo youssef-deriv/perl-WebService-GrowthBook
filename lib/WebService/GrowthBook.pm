@@ -141,7 +141,7 @@ set features
 
 evaluate a feature to get the value
 
-    $instance->eval_feature('feature_name'); 
+    $instance->eval_feature('feature_name');
 
 =cut
 
