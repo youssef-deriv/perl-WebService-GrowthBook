@@ -16,7 +16,7 @@ our $VERSION = '0.001';
 
 =head1 NAME
 
-WebService::GrowthBook - 
+WebService::GrowthBook -
 
 =head1 SYNOPSIS
 

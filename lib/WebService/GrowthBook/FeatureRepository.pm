@@ -8,6 +8,8 @@ use Log::Any qw($log);
 use Syntax::Keyword::Try;
 use JSON::MaybeUTF8 qw(decode_json_utf8);
 
+## VERSION
+
 class WebService::GrowthBook::FeatureRepository {
     field $http :param :writer //= HTTP::Tiny->new();
     method load_features($api_host, $client_key) {
