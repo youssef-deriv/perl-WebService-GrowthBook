@@ -7,14 +7,33 @@ use HTTP::Tiny;
 use Log::Any qw($log);
 use Syntax::Keyword::Try;
 use JSON::MaybeUTF8 qw(decode_json_utf8);
+use WebService::GrowthBook::InMemoryFeatureCache;
 
 ## VERSION
 
 class WebService::GrowthBook::FeatureRepository {
     field $http :param :writer //= HTTP::Tiny->new();
-    method load_features($api_host, $client_key) {
-        # TODO add cache here
-        my $features = $self->_fetch_features($api_host, $client_key);
+    field $cache :param //= WebService::GrowthBook::InMemoryFeatureCache->new();
+    method set_cache($new_cache){
+        die "Invalid cache object" unless blessed($new_cache) && $new_cache->isa('WebService::GrowthBook::AbstractFeatureCache');
+        $cache = $new_cache;
+    }
+    
+    method clear_cache(){
+        $cache->clear();
+    }
+    method load_features($api_host, $client_key, $ttl = 60) {
+        my $key = $api_host . '::' . $client_key;
+        my $features = $cache->get($key);
+        if($features){
+            return $features;
+        } 
+        $features = $self->_fetch_features($api_host, $client_key);
+        if($features){
+            $cache->set($key, $features, $ttl);
+            $log->debug("Features loaded from GrowthBook API, set in cache");
+        }
+        
         return $features;
     }
 
