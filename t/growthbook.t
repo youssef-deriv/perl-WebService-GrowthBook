@@ -6,14 +6,15 @@ use Test::MockModule;
 use WebService::GrowthBook;
 use Path::Tiny;
 use FindBin qw($Bin);
-
 my $instance = WebService::GrowthBook->new;
 throws_ok { $instance->load_features } qr/Must specify 'client_key' to refresh features/;
 my $mock = Test::MockModule->new('HTTP::Tiny');
 my $get_result;
+my $http_hit = 0;
 $mock->mock(
     'get',
     sub {
+        $http_hit = 1;
         return $get_result;
     }
 );
@@ -25,6 +26,10 @@ $get_result = {
 
 $instance = WebService::GrowthBook->new(client_key => 'key');
 $instance->load_features;
+ok($http_hit,"fetch data from site");
+$http_hit = 0;
+$instance->load_features;
+ok(!$http_hit, "fetch data from cache");
 ok($instance->is_on('bool-feature'), 'bool-feature is on');
 ok(!$instance->is_off('bool-feature'), 'bool-feature is on');
 is($instance->get_feature_value('bool-feature'), 1, 'bool-feature value is 1');
