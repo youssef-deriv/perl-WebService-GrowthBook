@@ -2,6 +2,7 @@ package WebService::GrowthBook::FeatureRepository;
 use strict;
 use warnings;
 no indirect;
+use Scalar::Util qw(blessed);
 use Object::Pad;
 use HTTP::Tiny;
 use Log::Any qw($log);
@@ -13,9 +14,9 @@ use WebService::GrowthBook::InMemoryFeatureCache;
 
 class WebService::GrowthBook::FeatureRepository {
     field $http :param :writer //= HTTP::Tiny->new();
-    field $cache :param //= WebService::GrowthBook::InMemoryFeatureCache->new();
+    field $cache :param //= WebService::GrowthBook::InMemoryFeatureCache->singleton();
     method set_cache($new_cache){
-        die "Invalid cache object" unless blessed($new_cache) && $new_cache->isa('WebService::GrowthBook::AbstractFeatureCache');
+        die "Invalid cache object $new_cache" unless blessed($new_cache) && $new_cache->isa('WebService::GrowthBook::AbstractFeatureCache');
         $cache = $new_cache;
     }
     

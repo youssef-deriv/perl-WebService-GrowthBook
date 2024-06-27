@@ -2,10 +2,11 @@ package WebService::GrowthBook::InMemoryFeatureCache;
 use strict;
 use warnings;
 no indirect;
+use feature qw(state);
 use Object::Pad;
 use WebService::GrowthBook::CacheEntry;
 
-class WebService::GrowthBook::InMemoryFeatureCache {
+class WebService::GrowthBook::InMemoryFeatureCache :isa(WebService::GrowthBook::AbstractFeatureCache) {
     field %cache;
 
     method get($key){
@@ -25,5 +26,10 @@ class WebService::GrowthBook::InMemoryFeatureCache {
 
     method clear(){
         %cache = ();
+    }
+    
+    sub singleton($class){
+        state $instance = $class->new();
+        return $instance;
     }
 }
