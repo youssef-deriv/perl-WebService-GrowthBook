@@ -46,14 +46,11 @@ WebService::GrowthBook - sdk of growthbook
 
 class WebService::GrowthBook {
     field $url :param //= 'https://api.growthbook.io/api/v1';
-    field $client_key :param //= '';
+    field $client_key :param;
     field $features :param //= {};
     field $cache_ttl :param //= 60;
     field $cache //= WebService::GrowthBook::InMemoryFeatureCache->singleton;
     method load_features {
-        if(!$client_key) {
-            die "Must specify 'client_key' to refresh features";
-        }
         my $feature_repository = WebService::GrowthBook::FeatureRepository->new(cache => $cache);
         my $loaded_features = $feature_repository->load_features($url, $client_key, $cache_ttl);
         if($loaded_features){
