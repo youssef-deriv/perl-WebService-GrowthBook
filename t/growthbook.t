@@ -39,4 +39,7 @@ is_deeply($instance->get_feature_value('json-feature'), {"a" => 1,"b" => 2}, 'js
 is($instance->get_feature_value('not-exist-feature'), undef, "not-exist-feature value is undef");
 is($instance->is_on('not-exist-feature'), undef, "not-exist-feature is undef");
 is($instance->is_off('not-exist-feature'), undef, "not-exist-feature is undef");
+is($instance->is_on('string-feature'), undef, "is_on string is undef");
+is($instance->is_off('string-feature'), undef, "is_off string is undef");
+
 done_testing();

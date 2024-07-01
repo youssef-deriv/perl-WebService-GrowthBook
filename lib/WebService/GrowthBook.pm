@@ -101,6 +101,8 @@ class WebService::GrowthBook {
         }
     
         return WebService::GrowthBook::FeatureResult->new(
+            id => $feature_name,
+            type => $feature->value_type,
             value => $default_value);
     }
     
