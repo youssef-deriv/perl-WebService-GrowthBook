@@ -55,8 +55,9 @@ class WebService::GrowthBook {
         my $loaded_features = $feature_repository->load_features($url, $client_key, $cache_ttl);
         if($loaded_features){
             $self->set_features($loaded_features);
+            return 1;
         }
-        return 1;
+        return undef;
     }
     method set_features($features_set) {
         $features = {};
