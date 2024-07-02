@@ -14,7 +14,7 @@ use WebService::GrowthBook::Feature;
 use WebService::GrowthBook::FeatureResult;
 use WebService::GrowthBook::InMemoryFeatureCache;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 =head1 NAME
 
