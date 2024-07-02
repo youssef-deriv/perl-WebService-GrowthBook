@@ -5,6 +5,7 @@ requires 'Scalar::Util';
 requires 'HTTP::Tiny';
 requires 'Log::Any';
 requires 'Syntax::Keyword::Try';
+requires 'Digest::MD5';
 
 
 on test => sub {
