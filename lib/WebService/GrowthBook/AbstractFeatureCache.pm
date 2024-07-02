@@ -3,6 +3,9 @@ use strict;
 use warnings;
 no indirect;
 use Object::Pad;
+
+## VERSION
+
 class WebService::GrowthBook::AbstractFeatureCache {
     method get($key){
         die "get not implemented";        

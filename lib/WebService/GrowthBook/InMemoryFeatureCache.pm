@@ -6,6 +6,8 @@ use feature qw(state);
 use Object::Pad;
 use WebService::GrowthBook::CacheEntry;
 
+## VERSION
+
 class WebService::GrowthBook::InMemoryFeatureCache :isa(WebService::GrowthBook::AbstractFeatureCache) {
     field %cache;
 

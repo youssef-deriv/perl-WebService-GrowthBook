@@ -3,6 +3,9 @@ use strict;
 use warnings;
 no indirect;
 use Object::Pad;
+
+## VERSION
+
 class WebService::GrowthBook::CacheEntry {
     field $value :param :reader;
     field $ttl :param;
