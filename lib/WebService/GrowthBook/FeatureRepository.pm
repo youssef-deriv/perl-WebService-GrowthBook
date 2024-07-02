@@ -28,6 +28,7 @@ class WebService::GrowthBook::FeatureRepository {
         my $key = get_cache_key($api_host, $client_key);
         my $features = $cache->get($key);
         if($features){
+            $log->debug("Features loaded from cache");
             return $features;
         } 
         $features = $self->_fetch_features($api_host, $client_key);
