@@ -6,6 +6,7 @@ use Scalar::Util qw(blessed);
 use Object::Pad;
 use HTTP::Tiny;
 use Log::Any qw($log);
+use Digest::MD5 qw(md5_base64);
 use Syntax::Keyword::Try;
 use JSON::MaybeUTF8 qw(decode_json_utf8);
 use WebService::GrowthBook::InMemoryFeatureCache;
@@ -24,7 +25,7 @@ class WebService::GrowthBook::FeatureRepository {
         $cache->clear();
     }
     method load_features($api_host, $client_key, $ttl = 60) {
-        my $key = $api_host . '::' . $client_key;
+        my $key = get_cache_key($api_host, $client_key);
         my $features = $cache->get($key);
         if($features){
             return $features;
@@ -81,4 +82,7 @@ class WebService::GrowthBook::FeatureRepository {
     }
 }
 
+sub get_cache_key($api_host, $client_key){
+    return md5_base64($api_host . '::' . $client_key);
+}
 1;
